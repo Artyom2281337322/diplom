@@ -255,8 +255,8 @@ class CourseController extends Controller
             }
         }
 
-        $isSuccess = empty($errors);
-        $message = $isSuccess ? '✓ Отлично! Задание выполнено верно.' : '✗ Ошибка: ' . implode('; ', $errors);
+       $isSuccess = empty($errors);
+$message = $isSuccess ? 'Правильно' : 'Неправильно';
 
         // Сохранение результата
         if (Auth::check()) {

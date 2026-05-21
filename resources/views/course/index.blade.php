@@ -581,7 +581,7 @@ function checkTask(taskId) {
     const html = document.getElementById('html-editor')?.value || '';
     const css = document.getElementById('css-editor')?.value || '';
     const resultDiv = document.getElementById('check-result');
-    resultDiv.innerHTML = '<div style="text-align: center;"><i class="fas fa-spinner fa-pulse"></i> Проверка...</div>';
+    resultDiv.innerHTML = 'Проверка...';
     resultDiv.className = 'check-result';
 
     fetch(`/api/check/${taskId}`, {
@@ -595,7 +595,7 @@ function checkTask(taskId) {
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            resultDiv.innerHTML = `<i class="fas fa-check-circle"></i> ${data.message}`;
+            resultDiv.innerHTML = data.message;
             resultDiv.className = 'check-result success';
             // Обновить статус урока в боковой панели
             const activeLesson = document.querySelector('.lesson-item.active');
@@ -607,12 +607,12 @@ function checkTask(taskId) {
                 }
             }
         } else {
-            resultDiv.innerHTML = `<i class="fas fa-times-circle"></i> ${data.message}`;
+            resultDiv.innerHTML = data.message;
             resultDiv.className = 'check-result error';
         }
     })
     .catch(() => {
-        resultDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Ошибка при проверке.';
+        resultDiv.innerHTML = 'Ошибка при проверке';
         resultDiv.className = 'check-result error';
     });
 }
