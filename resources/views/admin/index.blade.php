@@ -220,7 +220,7 @@
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
                                         <div class="progress-bar-container">
-                                            <div class="progress-bar-fill" style="width: {{ $user['progress_percent'] }}%;"></div>
+                                            <div class="progress-bar-fill"></div>
                                         </div>
                                         <span style="font-size: 0.85rem; min-width: 45px;">{{ $user['progress_percent'] }}%</span>
                                     </div>

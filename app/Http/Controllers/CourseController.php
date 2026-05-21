@@ -177,18 +177,7 @@ class CourseController extends Controller
                     }
 
                     // Проверка атрибутов
-                    if (isset($required['attributes']) && $required['attributes'] !== null) {
-                        foreach ($required['attributes'] as $attrName => $attrValue) {
-                            if (!$element->hasAttribute($attrName)) {
-                                $ok = false;
-                                break;
-                            }
-                            if ($element->getAttribute($attrName) !== $attrValue) {
-                                $ok = false;
-                                break;
-                            }
-                        }
-                    }
+                   
 
                     if ($ok) {
                         $found = true;

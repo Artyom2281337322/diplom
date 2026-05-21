@@ -38,7 +38,7 @@
                         <div style="color: #6c757d; font-size: 0.85rem;">пройдено</div>
                     </div>
                     <div class="progress-bar-container">
-                        <div class="progress-bar-fill" style="width: {{ $progressPercent }}%;"></div>
+                        <div class="progress-bar-fill"></div>
                     </div>
                     <div style="color: #6c757d;">
                         <i class="fas fa-check-circle" style="color: #28a745;"></i>
