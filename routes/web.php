@@ -67,6 +67,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     Route::get('/lessons/{lesson}/task/create', [AdminController::class, 'createTask'])->name('tasks.create');
     Route::post('/lessons/{lesson}/task', [AdminController::class, 'storeTask'])->name('tasks.store');
+
+    // Пользователи
+Route::get('/users', [AdminController::class, 'users'])->name('users');
 });
 
 require __DIR__ . '/auth.php';

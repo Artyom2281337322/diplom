@@ -4,17 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Models\Module;
 use App\Models\Lesson;
+use App\Models\Progress;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     // Главная страница админки
-    public function index()
-    {
-        $modules = Module::with('lessons.task')->orderBy('order_position')->get();
-        return view('admin.index', compact('modules'));
+   public function index()
+{
+    $modules = Module::with('lessons.task')->orderBy('order_position')->get();
+    
+    // Данные для вкладки пользователей
+    $totalLessons = Lesson::count();
+    $users = User::all();
+    
+    $usersData = [];
+    foreach ($users as $user) {
+        $completedLessons = Progress::where('user_id', $user->id)
+            ->where('is_completed', true)
+            ->count();
+        
+        $progressPercent = $totalLessons > 0 ? round($completedLessons / $totalLessons * 100) : 0;
+        
+        $usersData[] = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'registered_at' => $user->created_at,
+            'completed_lessons' => $completedLessons,
+            'total_lessons' => $totalLessons,
+            'progress_percent' => $progressPercent
+        ];
     }
+    
+    $usersData = collect($usersData)->sortByDesc('progress_percent')->values();
+    
+    return view('admin.index', compact('modules', 'usersData', 'totalLessons'));
+}
 
     // ========== Модули ==========
     public function createModule()
@@ -205,4 +234,39 @@ class AdminController extends Controller
         $task->delete();
         return redirect()->back()->with('success', 'Задание удалено');
     }
+
+    /**
+ * Показать список пользователей с прогрессом
+ */
+public function users()
+{
+    $users = User::all();
+    
+    $totalLessons = Lesson::count();
+    
+    $usersData = [];
+    foreach ($users as $user) {
+        $completedLessons = Progress::where('user_id', $user->id)
+            ->where('is_completed', true)
+            ->count();
+        
+        $progressPercent = $totalLessons > 0 ? round($completedLessons / $totalLessons * 100) : 0;
+        
+        $usersData[] = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'registered_at' => $user->created_at,
+            'completed_lessons' => $completedLessons,
+            'total_lessons' => $totalLessons,
+            'progress_percent' => $progressPercent
+        ];
+    }
+    
+    // Сортировка по проценту прогресса (по убыванию)
+    $usersData = collect($usersData)->sortByDesc('progress_percent')->values();
+    
+    return view('admin.users', compact('usersData', 'totalLessons'));
+}
 }
